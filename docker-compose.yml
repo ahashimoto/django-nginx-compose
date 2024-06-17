@@ -1,0 +1,24 @@
+version: '3.5'
+
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    volumes:
+      - ./nginx/conf:/etc/nginx/conf.d
+      - ./nginx/uwsgi_params:/etc/nginx/uwsgi_params
+      - ./src/static:/static
+      - ./src:/code
+    ports:
+      - '8080:80'
+    depends_on:
+      - django
+
+  django:
+    build: ./django
+    container_name: django
+    expose:
+      - '8001'
+    volumes:
+      - ./src:/code
+    command: bash -c "apt-get update && apt-get install -y libpcre3 libpcre3-dev tree && uwsgi --ini /code/webapp/uwsgi.ini"
