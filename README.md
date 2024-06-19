@@ -1,1 +1,1 @@
-# docker-compose example for nginx
+# docker-compose example for nginx + django
